@@ -1,0 +1,19 @@
+{
+  "name": "108server",
+  "version": "1.0.0",
+  "description": "Online server for handling 108 emergency requests",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app"
+  },
+  "keywords": [
+    "108",
+    "hackathon"
+  ],
+  "author": "Chirag Maheshwari",
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
