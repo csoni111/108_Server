@@ -6,11 +6,11 @@ var googleMapsClient = require('@google/maps').createClient({
 
 
 exports.getNearestDriver = function(db, userLat, userLon, callback) {
-	console.log("1");
+	// console.log("1");
 	getCity(userLat, userLon, function(city) {
-		console.log("2 - "+city);
+		// console.log("2 - "+city);
 		db.getDrivers(city, function(drivers) {
-			console.log("3");
+			// console.log("3");
 			var userLatLng = userLat+','+userLon;
 			breakArrayIntoSmallerChunks(drivers, userLatLng, callback);
 		});
@@ -40,7 +40,7 @@ function getCity (lat, lon, callback) {
 	});
 };
 
-function getDist (driverLatLngs, userLatLng, callback) {
+function getDist (j, driverLatLngs, userLatLng, callback) {
 	googleMapsClient.distanceMatrix({
 		origins: driverLatLngs,
 		destinations: userLatLng,
@@ -52,11 +52,11 @@ function getDist (driverLatLngs, userLatLng, callback) {
 				var dur = row.elements[0].duration.value;
 				if (minDur == null) {
 					minDur = dur;
-					i = index;
+					i = index + j;
 				} else {
 					if (minDur>dur) {
 						minDur = dur;
-						i = index;
+						i = index + j;
 					}					
 				}
 			});
@@ -69,29 +69,29 @@ function getDist (driverLatLngs, userLatLng, callback) {
 };
 
 function breakArrayIntoSmallerChunks(drivers, userLatLng, callback) {
-	var i,j,tempDrivers,chunk = 25;
+	var i,j,tempDrivers,chunk = 26;
 	var count = 0;
 	var batches = Math.ceil(drivers.length/chunk);
-	console.log("batches:"+batches);
+	// console.log("batches:"+batches);
 	var nearestDrivers = [];
 	function processResponse (minDur,i) {
-		console.log(minDur+"|"+i);
+		// console.log(minDur+"|"+i);
 		nearestDrivers.push(drivers[i]);
 		if(++count == batches) {
-			console.log("reach1");
+			// console.log("reach1");
 			if(nearestDrivers.length>1) {
-				console.log("reach2");
+				// console.log("reach2");
 				/* If there are more than one driver then process them again in batches of 25 */
 				breakArrayIntoSmallerChunks(nearestDrivers, userLatLng, callback)
 			} else {
-				console.log("reach3");
+				// console.log("reach3");
 				/* If only one driver remain then send the output */
 				callback(JSON.stringify(nearestDrivers[0]));
 			}
 		}
 	}
 
-	//code to break drivers array into 25 drivers each
+	//code to break drivers array into 26 drivers each
 	for (i=0,j=drivers.length; i<j; i+=chunk) {
 		tempDrivers = drivers.slice(i,i+chunk);
 		var driverLatLngs = '';
@@ -101,7 +101,7 @@ function breakArrayIntoSmallerChunks(drivers, userLatLng, callback) {
 			}
 			driverLatLngs += driver.latitude+','+driver.longitude;
 		});
-		getDist(driverLatLngs, userLatLng, processResponse);
+		getDist(i, driverLatLngs, userLatLng, processResponse);
 	}
 }
 

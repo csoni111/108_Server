@@ -31,7 +31,6 @@ app.get('/api/request', function (req, res) {
 		res.send(JSON.stringify({"error":"query params missing"}));
 		return;
 	}
-	console.log("req recieve");
 	gmaps.getNearestDriver(db, lat, lon, function(nearestDriverDetails) {
 		res.send(nearestDriverDetails);
 	});
@@ -39,6 +38,6 @@ app.get('/api/request', function (req, res) {
 
 
 // Set server port
-app.listen(3000, function() {
+app.listen(process.env.PORT || 3000, function() {
 	console.log('server is running');	
 });
