@@ -36,6 +36,15 @@ app.get('/api/request', function (req, res) {
 	});
 });
 
+app.get('/sms', function (req,res) {
+	var queryParams = req.query;
+	if(queryParams != null) {
+		res.send(JSON.stringify(queryParams));
+	} else {
+		res.send("no params sent");
+	}
+});
+
 
 // Set server port
 app.listen(process.env.PORT || 3000, function() {
