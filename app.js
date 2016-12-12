@@ -39,6 +39,6 @@ app.get('/api/request', function (req, res) {
 
 
 // Set server port
-app.listen(80, function() {
+app.listen(3000, function() {
 	console.log('server is running');	
 });
