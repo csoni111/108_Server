@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>108 Dashboard</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="./assets/css/vendor.css">
+<link rel="stylesheet" type="text/css" href="./assets/css/flat-admin.css">
+<link rel="stylesheet" type="text/css" href="./assets/css/custom.css">
+
+</head>
+<body>
+  <div class="app app-default">
+
+    <aside class="app-sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a class="sidebar-brand" href="#"><span class="highlight">108</span> Admin</a>
+        <button type="button" class="sidebar-toggle">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="sidebar-menu">
+        <ul class="sidebar-nav">
+          <li class="active">
+            <a href="#">
+              <div class="icon">
+                <i class="fa fa-tasks" aria-hidden="true"></i>
+              </div>
+              <div class="title">Dashboard</div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <div class="app-container">
+
+      <nav class="navbar navbar-default" id="navbar">
+        <div class="container-fluid">
+          <div class="navbar-collapse collapse in">
+            <ul class="nav navbar-nav navbar-mobile">
+              <li>
+                <button type="button" class="sidebar-toggle">
+                  <i class="fa fa-bars"></i>
+                </button>
+              </li>
+              <li class="logo">
+                <a class="navbar-brand" href="#"><span class="highlight">108</span> Admin</a>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-left">
+              <li class="navbar-title">Dashboard</li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="card card-banner card-chart card-green no-br">
+            <div class="card-header">
+              <div class="card-title">
+                <div class="title">Requests Today</div>
+              </div>
+              <ul class="card-action">
+                <li>
+                  <a href="#">
+                    <i class="fa fa-refresh"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="ct-chart-sale"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+          <a class="card card-banner card-green-light">
+            <div class="card-body">
+              <i class="icon fa fa-ambulance fa-4x"></i>
+              <div class="content ambulances">
+                <div class="title">Ambulances</div>
+                <div class="value"><span class="sign">#</span><span class="val">0</span></div>
+              </div>
+            </div>
+          </a>
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+          <a class="card card-banner card-blue-light">
+            <div class="card-body">
+              <i class="icon fa fa-plus-square fa-4x"></i>
+              <div class="content">
+                <div class="title">Requests</div>
+                <div class="value"><span class="sign"></span><span class="val">0</span></div>
+              </div>
+            </div>
+          </a>
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+          <a class="card card-banner card-yellow-light">
+            <div class="card-body">
+              <i class="icon fa fa-users fa-4x"></i>
+              <div class="content">
+                <div class="title">Users</div>
+                <div class="value"><span class="sign"></span><span class="val">0</span></div>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="card card-mini">
+            <div class="card-header">
+              <div class="card-title">
+                <div class="title">Map</div>
+              </div>
+            </div>
+            <div class="card-body no-padding">
+              <div id="map-canvas" class="map"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="card card-mini">
+            <div class="card-header">
+              <div class="card-title">Last Requests</div>
+              <ul class="card-action">
+                <li>
+                  <a href="#">
+                    <i class="fa fa-refresh"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body no-padding table-responsive">
+              <table class="table card-table last-requests">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="card card-tab card-mini">
+            <div class="card-header">
+              <ul class="nav nav-tabs tab-stats">
+                <li role="tab1" class="active">
+                  <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Requests</a>
+                </li>
+                <li role="tab2">
+                  <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">Ambulances</a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body tab-content">
+              <div role="tabpanel" class="tab-pane active" id="tab1">
+                <div class="row">
+                  <div class="col-sm-8">
+                  </div>
+                  <div class="col-sm-4">
+                  </div>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="tab2">
+                <div class="row">
+                  <div class="col-sm-8">
+                  </div>
+                  <div class="col-sm-4">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="app-footer"> 
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="footer-copyright">
+              Built for 108 Hackathon
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+  </div>
+
+  <script aynsc defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbAZzegP9sT0uuNyd9YZEeBs0ntG57GqI&callback=initMap"></script>
+  <script src="./assets/js/markerclusterer.js"></script>
+  <script src="./assets/js/map.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+  <script src="./assets/js/fb.js"></script>
+  <script src="./assets/js/vendor.js"></script>
+  <script src="./assets/js/charts.js"></script>
+  <script src="../assets/js/jsrender.min.js"></script>
+  <script src="../assets/js/jquery.animateNumber.min.js"></script>
+
+  <script id="lastRequestsListItemCompleted" type="text/x-jsrender">
+    <tr>
+      <td>{{:name}}</td>
+      <td class="right">{{:location}}</td>
+      <td><span class="badge badge-success badge-icon"><i class="fa fa-check" aria-hidden="true"></i><span>Completed</span></span></td>
+    </tr>
+  </script>
+  <script id="lastRequestsListItemPending" type="text/x-jsrender">
+    <tr>
+      <td></td>
+      <td class="right">{{:location}}</td>
+      <td><span class="badge badge-warning badge-icon"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Pending</span></span></td>
+    </tr>
+  </script>
+  <script id="lastRequestsListItemCancelled" type="text/x-jsrender">
+    <tr>
+      <td></td>
+      <td class="right">{{:location}}</td>
+      <td><span class="badge badge-danger badge-icon"><i class="fa fa-times" aria-hidden="true"></i><span>Cancelled</span></span></td>
+    </tr>
+  </script>
+</body></html>

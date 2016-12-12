@@ -17,9 +17,6 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 // set routes
-app.get('/', function (req, res) {
-	res.send('Index Page');
-});
 
 app.get('/api', function (req, res) {
 	res.send('Api Index Page');
@@ -38,6 +35,8 @@ app.get('/api/request', function (req, res) {
 
 app.get('/sms', function (req,res) {
 	var queryParams = req.query;
+	var moibleNo = queryParams.mobilenumber;
+	var message = queryParams.message; 
 	if(queryParams != null) {
 		res.send(JSON.stringify(queryParams));
 	} else {
