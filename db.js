@@ -32,3 +32,34 @@ exports.getDrivers = function(userCity, callback) {
 		callback(drivers);
 	});
 }
+
+exports.registerOTP = function (mobile, callback) {
+	var otp = Math.floor(1000 + Math.random() * 9000);
+	db.ref('otp/' + mobile).set(otp);
+	var https = require('https');
+	var options = {
+		host: 'rest.nexmo.com',
+		port: 443,
+		path: '/sms/json?api_key=bafc2596&api_secret=cccc06626deb6bd1&from=Laterox&to=91'
+		+ mobile + '&text='
+		+ encodeURIComponent('Your OTP for SignUp is ')
+		+ otp,
+		method: 'GET'
+	};
+
+	https.get(options, function(res) {
+		callback();
+		res.on('data', (d) => {
+			process.stdout.write(d);
+		});
+	}).on('error', function(e) {
+		console.error(e);
+	});
+};
+
+exports.checkOTP = function (mobile, otp, callback) {
+	otpRef = db.ref('otp/' + mobile);
+	otpRef.once("value", function(originalOTP) {
+		callback(otp == originalOTP.val());
+	});
+}

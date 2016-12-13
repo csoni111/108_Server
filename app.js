@@ -44,8 +44,35 @@ app.get('/sms', function (req,res) {
 	}
 });
 
+app.get('/otp/gen', function (req, res) {
+	var mobile = req.query.mobile;
+	if(checkMobile(mobile)) {
+		db.registerOTP(mobile, function() {
+			res.send(JSON.stringify({"success":"otp sent"}));
+		});
+	} else {
+		res.send(JSON.stringify({"error":"invalid mobile number"}));
+	}
+});
+
+app.get('/otp/check', function (req, res) {
+	var mobile = req.query.mobile;
+	var otp = req.query.otp;
+	if(checkMobile(mobile)) {
+		db.checkOTP(mobile, otp, function(check) {
+			res.send(JSON.stringify({"check": check}));
+		});
+	} else {
+		res.send(JSON.stringify({"error":"invalid mobile number"}));
+	}
+});
+
+function checkMobile(mobile) {
+	return /^[7-9]\d{9}$/.test(mobile);
+}
+
 app.use(function(req, res, next) {
-    res.status(404).redirect('/404.html');
+	res.status(404).redirect('/404.html');
 });
 
 // Set server port
