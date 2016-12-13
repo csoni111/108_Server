@@ -44,6 +44,9 @@ app.get('/sms', function (req,res) {
 	}
 });
 
+app.use(function(req, res, next) {
+    res.status(404).redirect('/404.html');
+});
 
 // Set server port
 app.listen(process.env.PORT || 3000, function() {

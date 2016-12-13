@@ -18,30 +18,29 @@ function initMap() {
    fetchDriverData();
 }
 
-function createMarker(latlng, name, phone, type, status, city){
+function createMarker(latlng, name, phone, type){
    var iconUrl = './assets/images/' + type + '.png';
-   if(status == 'active') {
-      var marker = new google.maps.Marker({
-         map: map,
-         position: latlng,
-         scrollwheel: false,
-         title: name,
-         icon: iconUrl
-      });
-      marker.addListener('click', function() {
-         var iwContent = '<div id="iw_container_list" style="float:left;">' +
-         '<div class="iw_title">' + name + '</div>' +
-         '<div class="iw_content">' + '+91'+phone + '</div></div>';
-         infoWindow.setContent(iwContent);
-         infoWindow.open(map, marker);
-      });
-      markers.push(marker);
-   }
+   var marker = new google.maps.Marker({
+      map: map,
+      position: latlng,
+      scrollwheel: false,
+      title: name,
+      icon: iconUrl
+   });
+   marker.addListener('click', function() {
+      var iwContent = '<div id="iw_container_list" style="float:left;">' +
+      '<div class="iw_title">' + name + '</div>' +
+      '<div class="iw_content">' + '+91'+phone + '</div></div>';
+      infoWindow.setContent(iwContent);
+      infoWindow.open(map, marker);
+   });
+   markers.push(marker);
+
 }
 
 function addMarkerCluster() {
    var markerCluster = new MarkerClusterer(map, markers,
-      {imagePath: 'https://raw.githubusercontent.com/googlemaps/js-marker-clusterer/gh-pages/images/m'});
+      {imagePath: './assets/images/m'});
 }
 
 function removeAll(){

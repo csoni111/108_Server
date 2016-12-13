@@ -11,19 +11,28 @@ firebase.initializeApp(config);
 db = firebase.database();
 
 function fetchDriverData() {
-  var count = 0;
+  var count = [];
+  var cityNames = [];
   var driverData = db.ref('driver');
   driverData.once('value', function(cities) {
-    // removeAllMarkers();
     cities.forEach(function(city) {
+      cityNames.push(city.key);
+      count.push(city.numChildren());
       city.forEach(function(driver) {
         var driver = driver.val();
-        var latlng = new google.maps.LatLng(driver.latitude,driver.longitude);
-        createMarker(latlng, driver.name, driver.phoneNumber,'ambulance', driver.status);
-        count++;
+        if(driver.status == 'active') {
+          var latlng = new google.maps.LatLng(driver.latitude,driver.longitude);
+          createMarker(latlng, driver.name, driver.phoneNumber,'ambulance');
+        }
       });
     });
+    var totalCount = count.reduce(function(total, num) { return total+num; });
+    $('div.ambulances .value .val').animateNumber({ number: totalCount }, 3000);
+    showCityWiseAmbulancesChart(count, totalCount);
     addMarkerCluster();
-    $('div.ambulances .value .val').animateNumber({ number: count },3000);
   });  
 }
+
+// Requests data for graph:
+// ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
+// [20710 ,22810 ,41210 ,28010 ,19158 ,35326 ,30837 ,49477]
