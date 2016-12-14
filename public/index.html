@@ -211,7 +211,7 @@
 
   </div>
 
-  <!-- <script aynsc defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbAZzegP9sT0uuNyd9YZEeBs0ntG57GqI&callback=initMap"></script> -->
+  <script aynsc defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbAZzegP9sT0uuNyd9YZEeBs0ntG57GqI&callback=initMap"></script>
   <script src="./assets/js/markerclusterer.js"></script>
   <script src="./assets/js/map.js"></script>
   <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
@@ -220,25 +220,24 @@
   <script src="./assets/js/charts.js"></script>
   <script src="../assets/js/jsrender.min.js"></script>
   <script src="../assets/js/jquery.animateNumber.min.js"></script>
-  <script type="text/javascript">test();</script>
 
-  <script id="lastRequestsListItemCompleted" type="text/x-jsrender">
+  <script id="completed" class="lastRequestsListItem" type="text/x-jsrender">
     <tr>
       <td>{{:name}}</td>
       <td class="right">{{:location}}</td>
       <td><span class="badge badge-success badge-icon"><i class="fa fa-check" aria-hidden="true"></i><span>Completed</span></span></td>
     </tr>
   </script>
-  <script id="lastRequestsListItemPending" type="text/x-jsrender">
+  <script id="pending" class="lastRequestsListItem" type="text/x-jsrender">
     <tr>
-      <td></td>
+      <td>{{:name}}</td>
       <td class="right">{{:location}}</td>
       <td><span class="badge badge-warning badge-icon"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Pending</span></span></td>
     </tr>
   </script>
-  <script id="lastRequestsListItemCancelled" type="text/x-jsrender">
+  <script id="cancelled" class="lastRequestsListItem" type="text/x-jsrender">
     <tr>
-      <td></td>
+      <td>{{:name}}</td>
       <td class="right">{{:location}}</td>
       <td><span class="badge badge-danger badge-icon"><i class="fa fa-times" aria-hidden="true"></i><span>Cancelled</span></span></td>
     </tr>

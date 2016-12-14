@@ -63,3 +63,17 @@ exports.checkOTP = function (mobile, otp, callback) {
 		callback(otp == originalOTP.val());
 	});
 }
+
+exports.registerNewRequest = function (lat, lng, mobile, location) {
+	var localISOTime = (new Date(Date.now() + 19800000)).toISOString().slice(0,-5) + '+05:30';
+	console.log(localISOTime);
+	newRequest = db.ref('requests').push();
+	newRequest.set({
+		date: localISOTime,
+		latitude: lat,
+		location: location,
+		longitude: lng,
+		mobile: mobile,
+		status: 'pending'
+	});
+};

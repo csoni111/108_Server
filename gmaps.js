@@ -5,10 +5,11 @@ var googleMapsClient = require('@google/maps').createClient({
 
 
 
-exports.getNearestDriver = function(db, userLat, userLon, callback) {
+exports.getNearestDriver = function(db, userLat, userLon, mobile, callback) {
 	// console.log("1");
-	getCity(userLat, userLon, function(city) {
+	getCity(userLat, userLon, function(city, location) {
 		// console.log("2 - "+city);
+		db.registerNewRequest(userLat, userLon, mobile, location);
 		db.getDrivers(city, function(drivers) {
 			// console.log("3");
 			var userLatLng = userLat+','+userLon;
@@ -24,12 +25,14 @@ function getCity (lat, lon, callback) {
 	},function(err, res) {
 		if (!err) {
 			var city = null;
+			var location = '';
 			if(res.json.results[0].address_components.some(function(obj) {
+				location += obj.short_name + ' ';
 				if(obj.types.some(function(type) {
 					if(type == 'administrative_area_level_2') { city = obj.long_name; return true;}
 				})) {return true;}
 			})) {
-				callback(city);
+				callback(city, location);
 			} else {
 				console.log("No City found");
 				callback(null);
@@ -40,6 +43,7 @@ function getCity (lat, lon, callback) {
 	});
 };
 
+exports.getCity = getCity;
 function getDist (j, driverLatLngs, userLatLng, callback) {
 	googleMapsClient.distanceMatrix({
 		origins: driverLatLngs,

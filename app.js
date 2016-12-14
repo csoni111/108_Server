@@ -11,7 +11,9 @@ db.init();
 // 	console.log(drivers);
 // });
 // gmaps.getDist("13.420668,80.22437|13.620668,80.22437", "13.820668,80.23437",null);
-
+// gmaps.getCity("13.220668", "80.22437", function(city, location) {
+// 	console.log(city+' | '+location);
+// });
 // instruct express to server up static assets
 app.use(express.static('public'));
 app.use(bodyParser.json());
@@ -24,23 +26,38 @@ app.get('/api', function (req, res) {
 
 app.get('/api/request', function (req, res) {
 	var lat = req.query.lat, lon = req.query.lon;
+	var mobile = req.query.mobile;
 	if (lat == null || lon == null) {
 		res.send(JSON.stringify({"error":"query params missing"}));
 		return;
 	}
-	gmaps.getNearestDriver(db, lat, lon, function(nearestDriverDetails) {
+	if (!checkMobile(mobile)) {
+		res.send(JSON.stringify({"error":"invalid mobile number"}));
+		return;
+	}
+	gmaps.getNearestDriver(db, lat, lon, mobile, function(nearestDriverDetails) {
 		res.send(nearestDriverDetails);
 	});
 });
 
 app.get('/sms', function (req,res) {
-	var queryParams = req.query;
-	var moibleNo = queryParams.mobilenumber;
-	var message = queryParams.message; 
-	if(queryParams != null) {
-		res.send(JSON.stringify(queryParams));
+	var mobile = req.query.mobilenumber.slice(2);
+	if(checkMobile(mobile)) {
+		var message = req.query.message;
+		var regex = /^Laterox Latitude:\[(.+)\] Longitude:\[(.+)\]$/g;
+		var matches = regex.exec(message);
+		if(matches != null) {
+			var lat = matches[1], lng = matches[2];
+			console.log(lat + ' | ' + lng);
+			gmaps.getNearestDriver(db, lat, lng, mobile, function(nearestDriverDetails) {
+				res.send(nearestDriverDetails);
+			});
+			res.sendStatus(200).end();
+		} else {
+			res.sendStatus(500).end();	
+		}
 	} else {
-		res.send("no params sent");
+		res.sendStatus(500).end();
 	}
 });
 

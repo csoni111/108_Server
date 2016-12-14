@@ -1,6 +1,7 @@
 var map;
 var infoWindow;
-var markers=[];
+var markers = {};
+var markerCluster;
 
 function initMap() {
    map = new google.maps.Map(document.getElementById('map-canvas'), {
@@ -12,13 +13,14 @@ function initMap() {
       }
    });
    infoWindow = new google.maps.InfoWindow();
+   markerCluster = new MarkerClusterer(map, [], {imagePath: './assets/images/m'});
    google.maps.event.addListener(map, 'click', function() {
       infoWindow.close();
    });
    fetchDriverData();
 }
 
-function createMarker(latlng, name, phone, type){
+function createMarker(driverId, latlng, name, phone, type){
    var iconUrl = './assets/images/' + type + '.png';
    var marker = new google.maps.Marker({
       map: map,
@@ -34,18 +36,15 @@ function createMarker(latlng, name, phone, type){
       infoWindow.setContent(iwContent);
       infoWindow.open(map, marker);
    });
-   markers.push(marker);
-
+   markerCluster.addMarker(marker);
+   markers[driverId] = marker;
 }
 
 function addMarkerCluster() {
-   var markerCluster = new MarkerClusterer(map, markers,
+   // var allMarkers = [];
+   // $.each(markers, function(index, marker) {
+   //    allMarkers.push(marker);
+   // });
+   markerCluster = new MarkerClusterer(map, allMarkers,
       {imagePath: './assets/images/m'});
-}
-
-function removeAll(){
-   markers.forEach(function(marker) {
-      marker.setMap(null);
-   });
-   markers = [];
 }
