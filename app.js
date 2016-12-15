@@ -43,8 +43,8 @@ app.get('/api/request', function (req, res) {
 app.get('/sms', function (req,res) {
 	var mobile = req.query.mobilenumber.slice(2);
 	if(checkMobile(mobile)) {
-		var message = req.query.message;
-		var regex = /^Laterox Latitude:\[(.+)\] Longitude:\[(.+)\]$/g;
+		var message = req.query.message.replace(/\+/g,' ');
+		var regex = /^Laterox Latitude: \[(.+)\] Longitude: \[(.+)\]$/g;
 		var matches = regex.exec(message);
 		if(matches != null) {
 			var lat = matches[1], lng = matches[2];

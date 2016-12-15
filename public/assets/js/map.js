@@ -18,6 +18,8 @@ function initMap() {
       infoWindow.close();
    });
    fetchDriverData();
+   fetchRequests();
+   fetchUsers();
 }
 
 function createMarker(driverId, latlng, name, phone, type){

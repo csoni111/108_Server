@@ -78,7 +78,7 @@ function fetchRequests() {
       request = request.val();
       var req = $("table.last-requests tbody tr."+request.mobile);
       if(req.length) {
-        
+
       }
     });
   }
@@ -87,4 +87,13 @@ function fetchRequests() {
 function addRequestToContainer(request) {
   var tmpl = $.templates(".lastRequestsListItem#"+request.status);
   return tmpl.render({req: request});
+}
+
+function fetchUsers() {
+  var count = 0;
+  var userData = db.ref('users');
+  userData.once('value', function(users) {
+    count = users.numChildren();
+    $('div.users .value .val').animateNumber({ number: count }, 3000);
+  });
 }
