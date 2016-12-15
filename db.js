@@ -63,10 +63,11 @@ exports.registerNewRequest = function (lat, lng, mobile, location) {
 function sendSMS(to, msg, callback) {
 	var https = require('https');
 	var options = {
-		host: 'rest.nexmo.com',
+		host: 'control.msg91.com',
 		port: 443,
-		path: '/sms/json?api_key=bafc2596&api_secret=cccc06626deb6bd1&from=Laterox&to=91'
-		+ to + '&text=' + encodeURIComponent(msg),
+		path: '/api/sendhttp.php?authkey=114503AseU8mOd1XN574c9c0c&mobiles=91'+to
+		+'&message='+encodeURIComponent(msg)
+		+'&sender=Latero&route=4&country=91',
 		method: 'GET'
 	};
 
@@ -79,4 +80,3 @@ function sendSMS(to, msg, callback) {
 		console.error(e);
 	});
 }
-// https://control.msg91.com/api/sendhttp.php?authkey=YourAuthKey&mobiles=919999999990,919999999999&message=message&sender=senderid&route=4&country=0
