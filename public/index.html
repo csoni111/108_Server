@@ -93,7 +93,7 @@
           <a class="card card-banner card-blue-light">
             <div class="card-body">
               <i class="icon fa fa-plus-square fa-4x"></i>
-              <div class="content">
+              <div class="content requests">
                 <div class="title">Requests</div>
                 <div class="value"><span class="sign"></span><span class="val">0</span></div>
               </div>
@@ -105,7 +105,7 @@
           <a class="card card-banner card-yellow-light">
             <div class="card-body">
               <i class="icon fa fa-users fa-4x"></i>
-              <div class="content">
+              <div class="content users">
                 <div class="title">Users</div>
                 <div class="value"><span class="sign"></span><span class="val">0</span></div>
               </div>
@@ -222,23 +222,23 @@
   <script src="../assets/js/jquery.animateNumber.min.js"></script>
 
   <script id="completed" class="lastRequestsListItem" type="text/x-jsrender">
-    <tr>
-      <td>{{:name}}</td>
-      <td class="right">{{:location}}</td>
+    <tr id="{{:req.mobile}}">
+      <td>{{:req.name}}</td>
+      <td class="right">{{:req.location}}</td>
       <td><span class="badge badge-success badge-icon"><i class="fa fa-check" aria-hidden="true"></i><span>Completed</span></span></td>
     </tr>
   </script>
   <script id="pending" class="lastRequestsListItem" type="text/x-jsrender">
-    <tr>
-      <td>{{:name}}</td>
-      <td class="right">{{:location}}</td>
+    <tr id="{{:req.mobile}}">
+      <td>{{:req.name}}</td>
+      <td class="right">{{:req.location}}</td>
       <td><span class="badge badge-warning badge-icon"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Pending</span></span></td>
     </tr>
   </script>
   <script id="cancelled" class="lastRequestsListItem" type="text/x-jsrender">
-    <tr>
-      <td>{{:name}}</td>
-      <td class="right">{{:location}}</td>
+    <tr id="{{:req.mobile}}">
+      <td>{{:req.name}}</td>
+      <td class="right">{{:req.location}}</td>
       <td><span class="badge badge-danger badge-icon"><i class="fa fa-times" aria-hidden="true"></i><span>Cancelled</span></span></td>
     </tr>
   </script>

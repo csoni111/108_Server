@@ -35,7 +35,7 @@ function getCity (lat, lon, callback) {
 				callback(city, location);
 			} else {
 				console.log("No City found");
-				callback(null);
+				callback(null, location);
 			}
 		} else{
 			console.log(err);

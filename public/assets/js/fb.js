@@ -60,16 +60,31 @@ function fetchDriverData() {
 // ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
 // [20710 ,22810 ,41210 ,28010 ,19158 ,35326 ,30837 ,49477]
 function fetchRequests() {
-  var count = 0;
-  var requestData = db.ref('requests');
-  requestData.once("value", function(requests) {
-    count = requests.numChildren();
-    requests.forEach(function(request) {
-      request = request.val();
-      var tmpl = $.templates(".lastRequestsListItem#"+request.status);
-      var post = tmpl.render({name : request.name, location: request.location});
-      container.append(post);
+  var container = $("table.last-requests tbody");
+  if(container.length) {
+    var count = 0;
+    var requestData = db.ref('requests');
+    requestData.once("value", function(requests) {
+      count = requests.numChildren();
+      $('div.requests .value .val').animateNumber({ number: count }, 3000);
+      requests.forEach(function(request) {
+        container.prepend(addRequestToContainer(request.val()));
+      });
     });
-  });
-  requestData.on("child_added", function() {});
+    requestData.on("child_added", function(request) {
+      container.prepend(addRequestToContainer(request.val()));
+    });
+    requestData.on("child_changed", function(request) {
+      request = request.val();
+      var req = $("table.last-requests tbody tr."+request.mobile);
+      if(req.length) {
+        
+      }
+    });
+  }
+}
+
+function addRequestToContainer(request) {
+  var tmpl = $.templates(".lastRequestsListItem#"+request.status);
+  return tmpl.render({req: request});
 }
