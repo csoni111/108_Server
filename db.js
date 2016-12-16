@@ -70,7 +70,7 @@ exports.getUserName = function (userMobile, callback) {
 	var userData = db.ref('users/'+userMobile);
 	userData.once('value', function(user) {
 		callback(user.val());
-	}
+	});
 };
 
 function sendSMS(to, msg, callback) {
