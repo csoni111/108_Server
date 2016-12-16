@@ -48,7 +48,7 @@ exports.checkOTP = function (mobile, otp, callback) {
 
 exports.registerNewRequest = function (lat, lng, mobile, location) {
 	var localISOTime = (new Date(Date.now() + 19800000)).toISOString().slice(0,-5) + '+05:30';
-	console.log(localISOTime);
+	// console.log(localISOTime);
 	newRequest = db.ref('requests').push();
 	newRequest.set({
 		date: localISOTime,
@@ -58,6 +58,19 @@ exports.registerNewRequest = function (lat, lng, mobile, location) {
 		mobile: mobile,
 		status: 'pending'
 	});
+	return newRequest.key;
+};
+
+exports.sendRequestToDriver = function (driverMobile,lat, lng, name, userMobile) {
+	var msg = "Laterox Latitude: ["+lat+"] Longitude: ["+lng+"] name: ["+name+"] Mobile: ["+userMobile+"]";
+	sendSMS(driverMobile, msg);
+};
+
+exports.getUserName = function (userMobile, callback) {
+	var userData = db.ref('users/'+userMobile);
+	userData.once('value', function(user) {
+		callback(user.val());
+	}
 };
 
 function sendSMS(to, msg, callback) {

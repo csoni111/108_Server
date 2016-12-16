@@ -9,11 +9,16 @@ exports.getNearestDriver = function(db, userLat, userLon, mobile, callback) {
 	// console.log("1");
 	getCity(userLat, userLon, function(city, location) {
 		// console.log("2 - "+city);
-		db.registerNewRequest(userLat, userLon, mobile, location);
+		var requestID = db.registerNewRequest(userLat, userLon, mobile, location);
+		callback(requestID);
 		db.getDrivers(city, function(drivers) {
 			// console.log("3");
 			var userLatLng = userLat+','+userLon;
-			breakArrayIntoSmallerChunks(drivers, userLatLng, callback);
+			breakArrayIntoSmallerChunks(drivers, userLatLng, function(nearestDriver) {
+				db.getUserDetails(mobile, function(user) {
+					db.sendRequestToDriver(nearestDriver.phone, userLat, userLon, user.name, mobile);
+				});
+			});
 		});
 	});
 	
@@ -86,11 +91,11 @@ function breakArrayIntoSmallerChunks(drivers, userLatLng, callback) {
 			if(nearestDrivers.length>1) {
 				// console.log("reach2");
 				/* If there are more than one driver then process them again in batches of 25 */
-				breakArrayIntoSmallerChunks(nearestDrivers, userLatLng, callback)
+				breakArrayIntoSmallerChunks(nearestDrivers, userLatLng, callback);
 			} else {
 				// console.log("reach3");
 				/* If only one driver remain then send the output */
-				callback(JSON.stringify(nearestDrivers[0]));
+				callback(nearestDrivers[0]);
 			}
 		}
 	}

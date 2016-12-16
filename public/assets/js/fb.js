@@ -63,22 +63,24 @@ function fetchRequests() {
   var container = $("table.last-requests tbody");
   if(container.length) {
     var count = 0;
-    var requestData = db.ref('requests');
+    var requestData = db.ref('requests').orderByKey();
     requestData.once("value", function(requests) {
       count = requests.numChildren();
       $('div.requests .value .val').animateNumber({ number: count }, 3000);
-      requests.forEach(function(request) {
-        container.prepend(addRequestToContainer(request.val()));
-      });
     });
-    requestData.on("child_added", function(request) {
+    requestData.on("child_added", function(request) { 
       container.prepend(addRequestToContainer(request.val()));
+      if($("table.last-requests tbody tr").length > 5) {
+        var req = $("table.last-requests tbody tr:last");
+        req.remove();
+      }
     });
     requestData.on("child_changed", function(request) {
       request = request.val();
       var req = $("table.last-requests tbody tr."+request.mobile);
       if(req.length) {
-
+        newRequest = addRequestToContainer(request);
+        req.replaceWith(newRequest);
       }
     });
   }

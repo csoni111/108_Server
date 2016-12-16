@@ -35,8 +35,8 @@ app.get('/api/request', function (req, res) {
 		res.send(JSON.stringify({"error":"invalid mobile number"}));
 		return;
 	}
-	gmaps.getNearestDriver(db, lat, lon, mobile, function(nearestDriverDetails) {
-		res.send(nearestDriverDetails);
+	gmaps.getNearestDriver(db, lat, lon, mobile, function(requestID) {
+		res.send(JSON.stringify({'requestId':requestID}));
 	});
 });
 
@@ -49,8 +49,8 @@ app.get('/sms', function (req,res) {
 		if(matches != null) {
 			var lat = matches[1], lng = matches[2];
 			console.log(lat + ' | ' + lng);
-			gmaps.getNearestDriver(db, lat, lng, mobile, function(nearestDriverDetails) {
-				res.send(nearestDriverDetails);
+			gmaps.getNearestDriver(db, lat, lng, mobile, function(requestID) {
+				res.send(JSON.stringify({'requestId':requestID}));
 			});
 			res.sendStatus(200).end();
 		} else {
