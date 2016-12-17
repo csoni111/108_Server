@@ -64,7 +64,7 @@
               </div>
               <ul class="card-action">
                 <li>
-                  <a href="#">
+                  <a id="requestChartRefresh">
                     <i class="fa fa-refresh"></i>
                   </a>
                 </li>
@@ -215,29 +215,29 @@
   <script src="./assets/js/markerclusterer.js"></script>
   <script src="./assets/js/map.js"></script>
   <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
-  <script src="./assets/js/fb.js"></script>
-  <script src="./assets/js/vendor.js"></script>
   <script src="./assets/js/charts.js"></script>
+  <script src="./assets/js/vendor.js"></script>
+  <script src="./assets/js/fb.js"></script>
   <script src="../assets/js/jsrender.min.js"></script>
   <script src="../assets/js/jquery.animateNumber.min.js"></script>
 
   <script id="completed" class="lastRequestsListItem" type="text/x-jsrender">
     <tr id="{{:req.mobile}}">
-      <td>{{:req.name}}</td>
+      <td>{{:req.name}} ({{:req.gender}} {{:req.age}})</td>
       <td class="right">{{:req.location}}</td>
       <td><span class="badge badge-success badge-icon"><i class="fa fa-check" aria-hidden="true"></i><span>Completed</span></span></td>
     </tr>
   </script>
   <script id="pending" class="lastRequestsListItem" type="text/x-jsrender">
     <tr id="{{:req.mobile}}">
-      <td>{{:req.name}}</td>
+      <td>{{:req.name}} ({{:req.gender}} {{:req.age}})</td>
       <td class="right">{{:req.location}}</td>
       <td><span class="badge badge-warning badge-icon"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Pending</span></span></td>
     </tr>
   </script>
   <script id="cancelled" class="lastRequestsListItem" type="text/x-jsrender">
     <tr id="{{:req.mobile}}">
-      <td>{{:req.name}}</td>
+      <td>{{:req.name}} ({{:req.gender}} {{:req.age}})</td>
       <td class="right">{{:req.location}}</td>
       <td><span class="badge badge-danger badge-icon"><i class="fa fa-times" aria-hidden="true"></i><span>Cancelled</span></span></td>
     </tr>

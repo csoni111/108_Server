@@ -93,7 +93,6 @@ function sendSMS(to, msg, callback) {
 	};
 
 	https.get(options, function(res) {
-		
 		res.on('data', (chunk) => {
 			callback(chunk);
 		});

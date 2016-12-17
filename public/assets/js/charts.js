@@ -1,6 +1,7 @@
 
 function showCityWiseAmbulancesChart(drivers, count) {
-  if($('.ct-chart-citywise').length) { 
+  if($('.ct-chart-citywise').length) {
+    $('.ct-chart-citywise').html("");
     let data = { series: drivers };
     new Chartist.Pie('.ct-chart-citywise', data, {
       labelInterpolationFnc: (value) => {
@@ -58,6 +59,7 @@ function showRequestsChart(labels, data) {
           left: 0
         },
         height: 250,
+        high: 2,
         showArea: true,
         stackBars: true,
         fullWidth: true,
@@ -66,7 +68,10 @@ function showRequestsChart(labels, data) {
         Chartist.plugins.ctPointLabels({
           textAnchor: 'left',
           labelInterpolationFnc: function(value) {
-            return '$' + parseInt(value / 1000) + 'k'
+            if(parseInt(value) == 0) {
+              return '';
+            }
+            return parseInt(value);
           }
         })
         ]
