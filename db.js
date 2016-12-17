@@ -93,7 +93,7 @@ function sendSMS(to, msg, callback) {
 	https.get(options, function(res) {
 		callback();
 		res.on('data', (d) => {
-			process.stdout.write(d);
+			console.log(d);
 		});
 	}).on('error', function(e) {
 		console.error(e);

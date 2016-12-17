@@ -6,18 +6,18 @@ var googleMapsClient = require('@google/maps').createClient({
 
 
 exports.getNearestDriver = function(db, userLat, userLon, mobile, callback) {
-	// console.log("1");
+	console.log("1");
 	getCity(userLat, userLon, function(city, location) {
-		// console.log("2 - "+city+" | "+location);
+		console.log("2 - "+city+" | "+location);
 		var requestID = db.registerNewRequest(userLat, userLon, mobile, location);
 		callback(requestID);
 		db.getDrivers(city, function(drivers) {
-			// console.log("3");
+			console.log("3");
 			var userLatLng = userLat+','+userLon;
 			breakArrayIntoSmallerChunks(drivers, userLatLng, function(nearestDriver) {
-				// console.log("4");
+				console.log("4");
 				db.getUserName(mobile, function(user) {
-					// console.log("5");
+					console.log("5");
 					db.sendRequestToDriver(nearestDriver.phone, userLat, userLon, user.name, mobile, requestID);
 				});
 			});
