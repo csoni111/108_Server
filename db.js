@@ -18,7 +18,10 @@ exports.getDrivers = function(userCity, callback) {
 		if (userCity != null) {
 			if(cities.child(userCity).exists()) {
 				cities.child(userCity).forEach(function(driver) {
-					drivers.push(driver.val());
+					driver = driver.val();
+					if(driver.status == 'active') {	
+						drivers.push(driver);
+					}
 				});
 				callback(drivers);
 				return;
@@ -26,7 +29,10 @@ exports.getDrivers = function(userCity, callback) {
 		}
 		cities.forEach(function(city) {
 			city.forEach(function(driver) {
-				drivers.push(driver.val());
+				driver = driver.val();
+				if(driver.status == 'active') {	
+					drivers.push(driver);
+				}
 			})
 		});
 		callback(drivers);
@@ -61,9 +67,9 @@ exports.registerNewRequest = function (lat, lng, mobile, location) {
 	return newRequest.key;
 };
 
-exports.sendRequestToDriver = function (driverMobile,lat, lng, name, userMobile) {
-	var msg = "Laterox Latitude: ["+lat+"] Longitude: ["+lng+"] name: ["+name+"] Mobile: ["+userMobile+"]";
-	sendSMS(driverMobile, msg);
+exports.sendRequestToDriver = function (driverMobile,lat, lng, name, userMobile, requestId) {
+	var msg = "Laterox ["+lat+"]["+lng+"]["+name+"]["+userMobile+"]["+requestId+"]";
+	sendSMS(driverMobile, msg, function() {});
 };
 
 exports.getUserName = function (userMobile, callback) {

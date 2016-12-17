@@ -14,6 +14,10 @@ db.init();
 // gmaps.getCity("13.220668", "80.22437", function(city, location) {
 // 	console.log(city+' | '+location);
 // });
+gmaps.getNearestDriver(db, "13.60437187", "80.02923781", "8118830489", function(requestID) {
+	console.log(JSON.stringify({'requestId':requestID}));
+});
+// db.sendRequestToDriver("8118830489","23.33333", "80.443422", "chirag", "absdkjfsjkfbajsbdkajbsdjbaksdas-asn", "8266046321");
 // instruct express to server up static assets
 app.use(express.static('public'));
 app.use(bodyParser.json());

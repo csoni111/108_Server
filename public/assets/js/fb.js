@@ -18,7 +18,6 @@ function fetchDriverData() {
       cityNames.push(city.key);
       count.push(city.numChildren());
       city.forEach(function(driver) {
-        var marker;
         var driverId = driver.key;
         var driver = driver.val();
         if(driver.status == 'active') {
@@ -41,7 +40,7 @@ function fetchDriverData() {
           }
         } else {
           if (markers[driverId] != null) {
-            markerCluster.removeMarker(markers[driverId]);
+            driverMarkerCluster.removeMarker(markers[driverId]);
             markers[driverId].setMap(null);
             markers[driverId] = null;
             console.log("removed");
@@ -68,20 +67,50 @@ function fetchRequests() {
       count = requests.numChildren();
       $('div.requests .value .val').animateNumber({ number: count }, 3000);
     });
-    requestData.on("child_added", function(request) { 
-      container.prepend(addRequestToContainer(request.val()));
-      if($("table.last-requests tbody tr").length > 5) {
-        var req = $("table.last-requests tbody tr:last");
-        req.remove();
-      }
+    requestData.on("child_added", function(request) {
+      var requestId = request.key;
+      request = request.val();
+      getUserName(request.mobile, function(user) {
+        request.name = user.name;
+        container.prepend(addRequestToContainer(request));
+        if($("table.last-requests tbody tr").length > 5) {
+          var req = $("table.last-requests tbody tr:last");
+          req.remove();
+        }
+        if(request.status == 'pending') {
+          var latlng = new google.maps.LatLng(request.latitude,request.longitude);
+          createMarker(requestId, latlng, request.name, request.mobile, 'request');
+        }
+      });
     });
     requestData.on("child_changed", function(request) {
+      var requestId = request.key;
       request = request.val();
-      var req = $("table.last-requests tbody tr."+request.mobile);
-      if(req.length) {
-        newRequest = addRequestToContainer(request);
-        req.replaceWith(newRequest);
-      }
+      getUserName(request.mobile, function(user) {
+        request.name = user.name;
+        var req = $("table.last-requests tbody tr."+request.mobile);
+        if(req.length) {
+          newRequest = addRequestToContainer(request);
+          req.replaceWith(newRequest);
+        }
+        if(request.status == 'pending') {
+          var latlng = new google.maps.LatLng(request.latitude, request.longitude);
+          if (markers[requestId] != null) {
+            markers[requestId].setPosition(latlng);
+            console.log("request marker updated");
+          } else {
+            createMarker(requestId, latlng, request.name, request.mobile,'request');
+            console.log("created new request marker");
+          }
+        } else {
+          if (markers[requestId] != null) {
+            driverMarkerCluster.removeMarker(markers[requestId]);
+            markers[requestId].setMap(null);
+            markers[requestId] = null;
+            console.log("removed request marker");
+          }
+        }
+      });
     });
   }
 }
@@ -99,3 +128,10 @@ function fetchUsers() {
     $('div.users .value .val').animateNumber({ number: count }, 3000);
   });
 }
+
+function getUserName (userMobile, callback) {
+  var userData = db.ref('users/'+userMobile);
+  userData.once('value', function(user) {
+    callback(user.val());
+  });
+};

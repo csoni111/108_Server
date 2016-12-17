@@ -8,15 +8,17 @@ var googleMapsClient = require('@google/maps').createClient({
 exports.getNearestDriver = function(db, userLat, userLon, mobile, callback) {
 	// console.log("1");
 	getCity(userLat, userLon, function(city, location) {
-		// console.log("2 - "+city);
+		// console.log("2 - "+city+" | "+location);
 		var requestID = db.registerNewRequest(userLat, userLon, mobile, location);
 		callback(requestID);
 		db.getDrivers(city, function(drivers) {
 			// console.log("3");
 			var userLatLng = userLat+','+userLon;
 			breakArrayIntoSmallerChunks(drivers, userLatLng, function(nearestDriver) {
-				db.getUserDetails(mobile, function(user) {
-					db.sendRequestToDriver(nearestDriver.phone, userLat, userLon, user.name, mobile);
+				// console.log("4");
+				db.getUserName(mobile, function(user) {
+					// console.log("5");
+					db.sendRequestToDriver(nearestDriver.phone, userLat, userLon, user.name, mobile, requestID);
 				});
 			});
 		});
@@ -48,7 +50,7 @@ function getCity (lat, lon, callback) {
 	});
 };
 
-exports.getCity = getCity;
+// exports.getCity = getCity;
 function getDist (j, driverLatLngs, userLatLng, callback) {
 	googleMapsClient.distanceMatrix({
 		origins: driverLatLngs,
@@ -87,7 +89,7 @@ function breakArrayIntoSmallerChunks(drivers, userLatLng, callback) {
 		// console.log(minDur+"|"+i);
 		nearestDrivers.push(drivers[i]);
 		if(++count == batches) {
-			// console.log("reach1");
+			console.log("reach1");
 			if(nearestDrivers.length>1) {
 				// console.log("reach2");
 				/* If there are more than one driver then process them again in batches of 25 */
