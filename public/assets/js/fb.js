@@ -165,7 +165,7 @@ function createRequestsGraph() {
       var dateString = request.val().date;
       var date = new Date(Date.parse(dateString));
       var diffHours = Math.ceil((currentDate - date)/(millisInHour));
-      console.log("diff:" + diffHours);
+      // console.log("diff:" + diffHours);
       if( diffHours > maxDiffHours ) {
         return;
       } else {
@@ -173,8 +173,8 @@ function createRequestsGraph() {
         data[position]++;
       }
     });
-    console.log(hours);
-    console.log(data);
+    // console.log(hours);
+    // console.log(data);
     showRequestsChart(hours, data);
   });
 }

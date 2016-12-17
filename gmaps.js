@@ -12,13 +12,13 @@ exports.getNearestDriver = function(db, userLat, userLon, mobile, callback) {
 		var requestID = db.registerNewRequest(userLat, userLon, mobile, location);
 		callback(requestID);
 		db.getDrivers(city, function(drivers) {
-			console.log("3");
+			console.log("3 - "+drivers.length);
 			var userLatLng = userLat+','+userLon;
 			breakArrayIntoSmallerChunks(drivers, userLatLng, function(nearestDriver) {
 				console.log("4 - " + JSON.stringify(nearestDriver));
 				db.getUserName(mobile, function(user) {
 					console.log("5");
-					db.sendRequestToDriver(nearestDriver.phone, userLat, userLon, user.name, mobile, requestID);
+					db.sendRequestToDriver(nearestDriver.phone, userLat, userLon, user, mobile, requestID);
 				});
 			});
 		});
@@ -78,6 +78,7 @@ function getDist (j, driverLatLngs, userLatLng, callback) {
 		}
 	});
 };
+exports.getDist = getDist;
 
 function breakArrayIntoSmallerChunks(drivers, userLatLng, callback) {
 	var i,j,tempDrivers,chunk = 26;
@@ -89,7 +90,7 @@ function breakArrayIntoSmallerChunks(drivers, userLatLng, callback) {
 		// console.log(minDur+"|"+i);
 		nearestDrivers.push(drivers[i]);
 		if(++count == batches) {
-			console.log("reach1");
+			// console.log("reach1");
 			if(nearestDrivers.length>1) {
 				// console.log("reach2");
 				/* If there are more than one driver then process them again in batches of 25 */
@@ -112,9 +113,9 @@ function breakArrayIntoSmallerChunks(drivers, userLatLng, callback) {
 			}
 			driverLatLngs += driver.latitude+','+driver.longitude;
 		});
+		// console.log(i+'|'+driverLatLngs+'|'+userLatLng+'|');	
 		getDist(i, driverLatLngs, userLatLng, processResponse);
 	}
 }
 
-// exports.getDist = getDist;
 

@@ -10,7 +10,7 @@ db.init();
 // db.getDrivers('Chennai',function(drivers) {
 // 	console.log(drivers);
 // });
-// gmaps.getDist("13.420668,80.22437|13.620668,80.22437", "13.820668,80.23437",null);
+// gmaps.getDist(5,"13.420668,80.22437|13.620668,80.22437", "13.820668,80.23437",null);
 // gmaps.getCity("13.220668", "80.22437", function(city, location) {
 // 	console.log(city+' | '+location);
 // });
