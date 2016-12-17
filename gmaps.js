@@ -15,7 +15,7 @@ exports.getNearestDriver = function(db, userLat, userLon, mobile, callback) {
 			console.log("3");
 			var userLatLng = userLat+','+userLon;
 			breakArrayIntoSmallerChunks(drivers, userLatLng, function(nearestDriver) {
-				console.log("4");
+				console.log("4 - " + JSON.stringify(nearestDriver));
 				db.getUserName(mobile, function(user) {
 					console.log("5");
 					db.sendRequestToDriver(nearestDriver.phone, userLat, userLon, user.name, mobile, requestID);

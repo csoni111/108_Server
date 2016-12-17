@@ -68,8 +68,8 @@ app.get('/sms', function (req,res) {
 app.get('/otp/gen', function (req, res) {
 	var mobile = req.query.mobile;
 	if(checkMobile(mobile)) {
-		db.registerOTP(mobile, function() {
-			res.send(JSON.stringify({"success":"otp sent"}));
+		db.registerOTP(mobile, function(chunk) {
+			res.send(JSON.stringify({"success":"otp sent", "chunk": chunk}));
 		});
 	} else {
 		res.send(JSON.stringify({"error":"invalid mobile number"}));

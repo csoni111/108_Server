@@ -69,7 +69,9 @@ exports.registerNewRequest = function (lat, lng, mobile, location) {
 
 exports.sendRequestToDriver = function (driverMobile,lat, lng, name, userMobile, requestId) {
 	var msg = "Laterox ["+lat+"]["+lng+"]["+name+"]["+userMobile+"]["+requestId+"]";
-	sendSMS(driverMobile, msg, function() {});
+	sendSMS(driverMobile, msg, function(chunk) {
+		console.log("sms sent to: " + driverMobile + " chunk: " + chunk);
+	});
 };
 
 exports.getUserName = function (userMobile, callback) {
@@ -91,9 +93,9 @@ function sendSMS(to, msg, callback) {
 	};
 
 	https.get(options, function(res) {
-		callback();
-		res.on('data', (d) => {
-			console.log(d);
+		
+		res.on('data', (chunk) => {
+			callback(chunk);
 		});
 	}).on('error', function(e) {
 		console.error(e);
