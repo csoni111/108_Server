@@ -18,7 +18,9 @@ exports.getDrivers = function(userCity, callback) {
 		if (userCity != null) {
 			if(cities.child(userCity).exists()) {
 				cities.child(userCity).forEach(function(driver) {
+					driverId = driver.key;
 					driver = driver.val();
+					drvier.id = driverId;
 					if(driver.status == 'active') {	
 						drivers.push(driver);
 					}
@@ -29,7 +31,9 @@ exports.getDrivers = function(userCity, callback) {
 		}
 		cities.forEach(function(city) {
 			city.forEach(function(driver) {
+				driverId = driver.key;
 				driver = driver.val();
+				drvier.id = driverId;
 				if(driver.status == 'active') {	
 					drivers.push(driver);
 				}
@@ -73,6 +77,16 @@ exports.sendRequestToDriver = function (driverMobile, lat, lng, user, userMobile
 	sendSMS(driverMobile, msg, function(chunk) {
 		console.log("sms sent to: " + driverMobile + " chunk: " + chunk);
 	});
+};
+
+exports.setDriverIdInRequest = function (requestId, driverId) {
+	var driver = db.ref('requests/'+requestId+'/driverId');
+	driver.set(driverId);
+};
+
+exports.setDriverInactive = function (driverId, city) {
+	var driver = db.ref('driver/'+city+'/'+driverId+'/status');
+	driver.set('inactive');
 };
 
 exports.getUserName = function (userMobile, callback) {

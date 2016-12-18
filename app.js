@@ -19,6 +19,7 @@ db.init();
 // });
 // db.sendRequestToDriver("8118830489","23.33333", "80.443422", "chirag", "absdkjfsjkfbajsbdkajbsdjbaksdas-asn", "8266046321");
 // instruct express to server up static assets
+
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
