@@ -20,7 +20,7 @@ exports.getDrivers = function(userCity, callback) {
 				cities.child(userCity).forEach(function(driver) {
 					driverId = driver.key;
 					driver = driver.val();
-					drvier.id = driverId;
+					driver.id = driverId;
 					if(driver.status == 'active') {	
 						drivers.push(driver);
 					}
@@ -33,12 +33,13 @@ exports.getDrivers = function(userCity, callback) {
 			city.forEach(function(driver) {
 				driverId = driver.key;
 				driver = driver.val();
-				drvier.id = driverId;
+				driver.id = driverId;
 				if(driver.status == 'active') {	
 					drivers.push(driver);
 				}
 			})
 		});
+		// console.log(JSON.stringify(drivers));
 		callback(drivers);
 	});
 }
