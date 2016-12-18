@@ -52,11 +52,12 @@ exports.checkOTP = function (mobile, otp, callback) {
 	});
 }
 
-exports.registerNewRequest = function (lat, lng, mobile, location) {
+exports.registerNewRequest = function (lat, lng, mobile, location, city) {
 	var localISOTime = (new Date(Date.now() + 19800000)).toISOString().slice(0,-5) + '+05:30';
 	// console.log(localISOTime);
 	newRequest = db.ref('requests').push();
 	newRequest.set({
+		city: city,
 		date: localISOTime,
 		latitude: lat,
 		location: location,

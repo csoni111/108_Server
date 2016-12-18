@@ -13,22 +13,24 @@ function showCityWiseAmbulancesChart(drivers, count) {
   }
 }
 
-// if($('.ct-chart-os').length) { 
-//   let data = {
-//     series: [1300, 200, 605, 205, 100]
-//   };
+function showCityWiseRequestsChart(requests, count) {
+  if($('.ct-chart-requests').length) { 
+    let data = {
+      series: requests
+    };
 
-//   new Chartist.Pie('.ct-chart-os', data, {
-//     labelInterpolationFnc: (value) => {
-//       return Math.round(value / data.series.reduce(sum) * 100) + '%';
-//     },
-//     startAngle: 270,
-//     donut: true,
-//     donutWidth: 20,
-//     labelPosition: 'outside',
-//     labelOffset: -30
-//   });
-// }
+    new Chartist.Pie('.ct-chart-requests', data, {
+      labelInterpolationFnc: (value) => {
+        return Math.round(value / count * 100) + '%';
+      },
+      startAngle: 270,
+      donut: true,
+      donutWidth: 20,
+      labelPosition: 'outside',
+      labelOffset: -30
+    });
+  }
+}
 
 // $(".tab-stats a[data-toggle='tab']").on("shown.bs.tab", (e) => {
 //   $(e.currentTarget.hash).find('.chart').each(function(el, tab) {
@@ -59,7 +61,7 @@ function showRequestsChart(labels, data) {
           left: 0
         },
         height: 250,
-        high: 2,
+        high: (Math.max.apply(null, data)*1.5),
         showArea: true,
         stackBars: true,
         fullWidth: true,

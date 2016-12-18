@@ -9,7 +9,7 @@ exports.getNearestDriver = function(db, userLat, userLon, mobile, callback) {
 	console.log("1");
 	getCity(userLat, userLon, function(city, location) {
 		console.log("2 - "+city+" | "+location);
-		var requestID = db.registerNewRequest(userLat, userLon, mobile, location);
+		var requestID = db.registerNewRequest(userLat, userLon, mobile, location, city);
 		callback(requestID);
 		db.getDrivers(city, function(drivers) {
 			console.log("3 - "+drivers.length);

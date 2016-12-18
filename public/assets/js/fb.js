@@ -150,6 +150,9 @@ function getUserName (userMobile, callback) {
 // [20710 ,22810 ,41210 ,28010 ,19158 ,35326 ,30837 ,49477]
 
 function createRequestsGraph() {
+  var count = [];
+  var cityNames = [];
+  var totalCount = 0;
   var requestData = db.ref('requests').orderByKey();
   var maxDiffHours = 10, millisInHour = (60 * 60 * 1000);
   var currentDate = tempDate = new Date();
@@ -161,21 +164,28 @@ function createRequestsGraph() {
   }
   hours.reverse();
   requestData.once("value", function(requests) {
+    totalCount = requests.numChildren();
     requests.forEach(function(request) {
-      var dateString = request.val().date;
+      request = request.val();
+      var dateString = request.date;
       var date = new Date(Date.parse(dateString));
       var diffHours = Math.ceil((currentDate - date)/(millisInHour));
       // console.log("diff:" + diffHours);
-      if( diffHours > maxDiffHours ) {
-        return;
-      } else {
+      if( diffHours <= maxDiffHours ) {
         var position = maxDiffHours - diffHours - 1;
         data[position]++;
       }
+      var index = cityNames.indexOf(request.city);
+      if(index == -1) {
+        cityNames.push(request.city);
+        index = cityNames.indexOf(request.city);
+        city[index] = 1;
+      } else {
+        city[index]++;
+      }
     });
-    // console.log(hours);
-    // console.log(data);
     showRequestsChart(hours, data);
+    showCityWiseRequestsChart(count, totalCount);
   });
 }
 
