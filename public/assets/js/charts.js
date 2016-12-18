@@ -65,7 +65,7 @@ function showRequestsChart(labels, data) {
         showArea: true,
         stackBars: true,
         fullWidth: true,
-        lineSmooth: true,
+        lineSmooth: false,
         plugins: [
         Chartist.plugins.ctPointLabels({
           textAnchor: 'left',
