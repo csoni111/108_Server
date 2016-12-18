@@ -179,13 +179,14 @@ function createRequestsGraph() {
       if(index == -1) {
         cityNames.push(request.city);
         index = cityNames.indexOf(request.city);
-        city[index] = 1;
+        count[index] = 1;
       } else {
-        city[index]++;
+        count[index]++;
       }
     });
     showRequestsChart(hours, data);
     showCityWiseRequestsChart(count, totalCount);
+    // showCityWiseRequestsChart([20,30,40],90);
   });
 }
 
