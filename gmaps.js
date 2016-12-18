@@ -21,6 +21,9 @@ exports.getNearestDriver = function(db, userLat, userLon, mobile, callback) {
 				db.getUserName(mobile, function(user) {
 					console.log("5");
 					db.sendRequestToDriver(nearestDriver.phone, userLat, userLon, user, mobile, requestID);
+					getDist(0, nearestDriver.latitude+','+nearestDriver.longitude, userLat+','+userLon, function(minDur, i) {
+						db.sendDriverLatLngToUser(mobile, minDur);
+					});
 				});
 			});
 		});

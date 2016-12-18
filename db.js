@@ -76,9 +76,16 @@ exports.registerNewRequest = function (lat, lng, mobile, location, city) {
 exports.sendRequestToDriver = function (driverMobile, lat, lng, user, userMobile, requestId) {
 	var msg = "Laterox "+lat+","+lng+","+user.name+","+userMobile+","+user.age+","+user.gender+","+requestId;
 	sendSMS(driverMobile, msg, function(chunk) {
-		console.log("sms sent to: " + driverMobile + " chunk: " + chunk);
+		console.log("driver sms sent to: " + driverMobile + " chunk: " + chunk);
 	});
 };
+
+exports.sendDriverLatLngToUser = function (userMobile, duration) {
+	var msg = "Lateroxdriver "+duration;
+	sendSMS(userMobile, msg, function(chunk) {
+		console.log("user sms sent to: " + userMobile + " chunk: " + chunk);
+	});
+}
 
 exports.setDriverIdInRequest = function (requestId, driverId) {
 	var driver = db.ref('requests/'+requestId+'/driverId');
