@@ -123,3 +123,17 @@ function sendSMS(to, msg, callback) {
 		console.error(e);
 	});
 }
+
+exports.registerNagpur = function (city, name, latlng) {
+	newRequest = db.ref('driver/'+city).push();
+	newRequest.set({
+		accuracy:"",
+		district: city,
+		latitude: latlng.lat,
+		longitude: latlng.lng,
+		name:name,
+		phone: "8266046321",
+		status: 'inactive'
+	});
+	return newRequest.key;
+};

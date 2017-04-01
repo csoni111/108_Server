@@ -117,4 +117,29 @@ function breakArrayIntoSmallerChunks(drivers, userLatLng, callback) {
 	}
 }
 
+exports.createCity = function fillTable(db, city, lat, lng, pagetoken){
+	var params = {
+		language: 'en',
+		location: [lat, lng],
+		radius: 10000,
+		type: 'hospital'
+	};
+	if(pagetoken!=null){
+		params['pagetoken'] = pagetoken;
+	}
+	googleMapsClient.placesNearby(params, function(err, res) {
+		result = res.json.results;
+		result.forEach(function(el) {
+			if(el.name.toLowerCase().includes("hospital")){
+				console.log(el.name);
+				console.log(el.geometry.location);
+				db.registerNagpur(city, el.name, el.geometry.location);
+			}
+		});
+		if(res.json.next_page_token!=null){
+			console.log("Still in process");
+			setTimeout(function() { fillTable(db, city, lat,lng,res.json.next_page_token);}, 2100);
+		}
+	});
+};
 
