@@ -14,16 +14,15 @@ exports.getNearestDriver = function(db, userLat, userLon, mobile, callback) {
 		db.getDrivers(city, function(drivers) {
 			console.log("3 - "+drivers.length);
 			var userLatLng = userLat+','+userLon;
-			breakArrayIntoSmallerChunks(drivers, userLatLng, function(nearestDriver) {
+			breakArrayIntoSmallerChunks(drivers, userLatLng, function(nearestDriver, minDur) {
 				console.log("4 - " + JSON.stringify(nearestDriver));
 				db.setDriverInactive(nearestDriver.id, nearestDriver.district);
 				db.setDriverIdInRequest(requestID, nearestDriver.id);
 				db.getUserName(mobile, function(user) {
 					console.log("5");
 					db.sendRequestToDriver(nearestDriver.phone, userLat, userLon, user, mobile, requestID);
-					getDist(0, nearestDriver.latitude+','+nearestDriver.longitude, userLat+','+userLon, function(minDur, i) {
-						db.sendDriverLatLngToUser(mobile, minDur);
-					});
+					db.sendDriverLatLngToUser(mobile, minDur);
+					
 				});
 			});
 		});
@@ -86,25 +85,20 @@ function getDist (j, driverLatLngs, userLatLng, callback) {
 exports.getDist = getDist;
 
 function breakArrayIntoSmallerChunks(drivers, userLatLng, callback) {
-	var i,j,tempDrivers,chunk = 26;
+	var i,j,tempDrivers,chunk = 20;
 	var count = 0;
 	var batches = Math.ceil(drivers.length/chunk);
-	// console.log("batches:"+batches);
+	console.log("batches:"+batches);
 	var nearestDrivers = [];
 	function processResponse (minDur,i) {
-		// console.log(minDur+"|"+i);
-		nearestDrivers.push(drivers[i]);
+		console.log(minDur+"|"+i);
+		nearestDrivers.push([drivers[i], minDur]);
 		if(++count == batches) {
-			// console.log("reach1");
-			if(nearestDrivers.length>1) {
-				// console.log("reach2");
-				/* If there are more than one driver then process them again in batches of 25 */
-				breakArrayIntoSmallerChunks(nearestDrivers, userLatLng, callback);
-			} else {
-				// console.log("reach3");
-				/* If only one driver remain then send the output */
-				callback(nearestDrivers[0]);
-			}
+			console.log("reach1");
+			nearestDrivers.sort(function(a, b) {
+				return a[1]-b[1];
+			});
+			callback(nearestDrivers[0][0], nearestDrivers[0][1]);
 		}
 	}
 
