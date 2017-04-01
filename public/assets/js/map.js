@@ -20,9 +20,8 @@ function initMap() {
    google.maps.event.addListener(map, 'click', function() {
       infoWindow.close();
    });
-   fetchDriverData();
-   fetchRequests();
-   fetchUsers();
+   
+   main();
 }
 
 function createMarker(id, latlng, name, phone, type){

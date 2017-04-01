@@ -9,55 +9,74 @@ var config = {
 };
 firebase.initializeApp(config);
 db = firebase.database();
-function fetchDriverData() {
-  var count = [];
-  var cityNames = [];
-  var totalCount = 0, previousCount = 0;
-  db.ref('driver').once('value', function(cities) {
-    cities.forEach(function(city) {
-      cityNames.push(city.key);
-      count.push(city.numChildren());
-      city.ref.on('child_changed', function(driver) {
-        var driverId = driver.key;
-        console.log(driverId);
-        driver = driver.val();
-        if(driver.status == 'active') {
-          var latlng = new google.maps.LatLng(driver.latitude, driver.longitude);
-          if (driverMarkers[driverId] != null) {
-            driverMarkers[driverId].setPosition(latlng);
-            console.log("updated");
-          } else {
-            createMarker(driverId, latlng, driver.name, driver.phone,'ambulance');
-            console.log("created new");
-          }
+
+var cities = [];
+var selectedCity;
+
+function main(){
+  // fetching the cities
+  db.ref('driver').once('value', function(citiesFb) {
+    citiesFb.forEach(function(city) {
+      cities.push(city.key);
+    });
+
+    //adding cities to ui and get selected city
+    addCitiesToDropDown(cities);
+
+    //load data for that city
+    loadData();
+  });
+  
+}
+
+function loadData(){
+  fetchDriverData(selectedCity);
+  fetchRequests();
+  fetchUsers();
+}
+
+function fetchDriverData(selectedCity) {
+  db.ref('driver/'+selectedCity).once('value', function(city) {
+
+    city.ref.on('child_changed', function(driver) {
+      var driverId = driver.key;
+      console.log(driverId);
+      driver = driver.val();
+      if(driver.status == 'active') {
+        var latlng = new google.maps.LatLng(driver.latitude, driver.longitude);
+        if (driverMarkers[driverId] != null) {
+          driverMarkers[driverId].setPosition(latlng);
+          console.log("updated");
         } else {
-          if (driverMarkers[driverId] != null) {
-            driverMarkerCluster.removeMarker(driverMarkers[driverId]);
-            driverMarkers[driverId].setMap(null);
-            driverMarkers[driverId] = null;
-            console.log("removed");
-          }
+          createMarker(driverId, latlng, driver.name, driver.phone,'ambulance');
+          console.log("created new");
         }
-      });
-      city.ref.on('child_added', function(driver) {
-        var driverId = driver.key;
-        var driver = driver.val();
+      } else {
+        if (driverMarkers[driverId] != null) {
+          driverMarkerCluster.removeMarker(driverMarkers[driverId]);
+          driverMarkers[driverId].setMap(null);
+          driverMarkers[driverId] = null;
+          console.log("removed");
+        }
+      }
+    });
+    city.ref.on('child_added', function(driver) {
+      var driverId = driver.key;
+      var driver = driver.val();
         // console.log("new driver added");
         if(driver.status == 'active') {
           var latlng = new google.maps.LatLng(driver.latitude,driver.longitude);
           createMarker(driverId, latlng, driver.name, driver.phone,'ambulance');
         }
       });
-    });
 
     // count++;
     // $('div.ambulances .value .val').prop('number', previousCount).animateNumber({ number: count }, 100);
     // previousCount = count;
-    totalCount = count.reduce(function(total, num) { return total+num; });
-    $('div.ambulances .value .val').animateNumber({ number: count[0] }, 3000);
+    
+    $('div.ambulances .value .val').animateNumber({ number: city.numChildren() }, 2000);
     // previousCount = totalCount;
-    showCityWiseAmbulancesChart(count, totalCount);
-    addCitiesToDropDown(cityNames);
+    // showCityWiseAmbulancesChart(count, totalCount);
     // addMarkerCluster();
   });  
 }
@@ -195,6 +214,12 @@ function addCitiesToDropDown(cityNames) {
     $(".select2").append("<option value="+cityName+">"+cityName+"</option>");
   });
   $(".select2").select2();
+  selectedCity = $(".select2").find(':selected').text();
+
+  $(".select2").on('change', function(){
+    selectedCity = this.value;
+    loadData();
+  });
 }
 
 $(document).ready(function(){
