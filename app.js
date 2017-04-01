@@ -17,7 +17,7 @@ db.init();
 // gmaps.getNearestDriver(db, "13.1444", "79.8940", "8118830489", function(requestID) {
 // 	console.log(JSON.stringify({'requestId':requestID}));
 // });
-// db.sendRequestToDriver("8118830489","23.33333", "80.443422", "chirag", "absdkjfsjkfbajsbdkajbsdjbaksdas-asn", "8266046321");
+// db.sendRequestToDriver("8118830489","23.33333", "80.443422", {'name':'Chirag', 'age':'21', 'gender': 'Male'}, "absdkjfsjkfbajsbdkajbsdjbaksdas-asn", "8266046321");
 // instruct express to server up static assets
 // gmaps.createCity(db, "Nagpur", 21.1458, 79.0882, null);
 

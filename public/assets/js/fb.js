@@ -9,7 +9,6 @@ var config = {
 };
 firebase.initializeApp(config);
 db = firebase.database();
-
 function fetchDriverData() {
   var count = [];
   var cityNames = [];
@@ -55,9 +54,10 @@ function fetchDriverData() {
     // $('div.ambulances .value .val').prop('number', previousCount).animateNumber({ number: count }, 100);
     // previousCount = count;
     totalCount = count.reduce(function(total, num) { return total+num; });
-    $('div.ambulances .value .val').animateNumber({ number: totalCount }, 3000);
-    previousCount = totalCount;
+    $('div.ambulances .value .val').animateNumber({ number: count[0] }, 3000);
+    // previousCount = totalCount;
     showCityWiseAmbulancesChart(count, totalCount);
+    addCitiesToDropDown(cityNames);
     // addMarkerCluster();
   });  
 }
@@ -188,6 +188,13 @@ function createRequestsGraph() {
     showCityWiseRequestsChart(count, totalCount);
     // showCityWiseRequestsChart([20,30,40],90);
   });
+}
+
+function addCitiesToDropDown(cityNames) {
+  cityNames.forEach(function(cityName) {
+    $(".select2").append("<option value="+cityName+">"+cityName+"</option>");
+  });
+  $(".select2").select2();
 }
 
 $(document).ready(function(){
