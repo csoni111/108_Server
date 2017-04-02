@@ -5,9 +5,16 @@ var requestMarkers = {}
 var driverMarkerCluster;
 var requestMarkerCluster;
 
+
+
 function initMap() {
+   latLngs = {
+      'Nagpur' : new google.maps.LatLng(21.1458,79.0882),
+      'Chennai' :new google.maps.LatLng(13.0827,80.2707),
+      'Roorkee' :new google.maps.LatLng(29.8543,77.8880)
+   }
    map = new google.maps.Map(document.getElementById('map-canvas'), {
-      center: new google.maps.LatLng(13.0827,80.2707),
+      center: latLngs['Nagpur'],
       zoom: 11,
       scrollwheel: false,
       mapTypeControlOptions: {
@@ -20,7 +27,8 @@ function initMap() {
    google.maps.event.addListener(map, 'click', function() {
       infoWindow.close();
    });
-   
+
+
    main();
 }
 
@@ -54,6 +62,16 @@ function createMarker(id, latlng, name, phone, type){
       requestMarkerCluster.addMarker(marker);
       requestMarkers[id] = marker;
    }
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers() {
+   driverMarkerCluster.clearMarkers();
+   // setMapOnAll(null);
+}
+
+function zoomTo(location) {
+   map.panTo(latLngs[location]);
 }
 
 // function addMarkerCluster(type) {

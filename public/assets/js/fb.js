@@ -30,15 +30,18 @@ function main(){
 }
 
 function loadData(){
+  $("table.last-requests tbody").empty();
+  clearMarkers();
+  zoomTo(selectedCity);
   fetchDriverData(selectedCity);
-  fetchRequests();
+  fetchRequests(selectedCity);
   fetchUsers();
 }
 
 function fetchDriverData(selectedCity) {
-  db.ref('driver/'+selectedCity).once('value', function(city) {
+  // db.ref('driver/'+selectedCity).once('value', function(city) {
 
-    city.ref.on('child_changed', function(driver) {
+    db.ref('driver/'+selectedCity).on('child_changed', function(driver) {
       var driverId = driver.key;
       console.log(driverId);
       driver = driver.val();
@@ -60,7 +63,7 @@ function fetchDriverData(selectedCity) {
         }
       }
     });
-    city.ref.on('child_added', function(driver) {
+    db.ref('driver/'+selectedCity).on('child_added', function(driver) {
       var driverId = driver.key;
       var driver = driver.val();
         // console.log("new driver added");
@@ -73,20 +76,21 @@ function fetchDriverData(selectedCity) {
     // count++;
     // $('div.ambulances .value .val').prop('number', previousCount).animateNumber({ number: count }, 100);
     // previousCount = count;
-    
-    $('div.ambulances .value .val').animateNumber({ number: city.numChildren() }, 2000);
+    db.ref('driver/'+selectedCity).once('value', function(drivers){
+      console.log(drivers.numChildren());
+      $('div.ambulances .value .val').animateNumber({ number: drivers.numChildren() }, 2000);
+    });
     // previousCount = totalCount;
-    // showCityWiseAmbulancesChart(count, totalCount);
+    showCityWiseAmbulancesChart([40, 40, 25], 105);
     // addMarkerCluster();
-  });  
+  // });  
 }
 
-
-function fetchRequests() {
+function fetchRequests(selectedCity) {
   var container = $("table.last-requests tbody");
   if(container.length) {
     var count = 0, previousCount = 0;
-    var requestData = db.ref('requests').orderByKey();
+    var requestData = db.ref('requests').orderByChild('city').equalTo(selectedCity);
     requestData.on("value", function(requests) {
       count = requests.numChildren();
       $('div.requests .value .val').prop('number', previousCount).animateNumber({ number: count }, 3000);
@@ -115,7 +119,7 @@ function fetchRequests() {
       request = request.val();
       getUserName(request.mobile, function(user) {
         request.name = user.name;
-        var req = $("table.last-requests tbody tr."+request.mobile);
+        var req = $("table.last-requests tbody tr#"+request.mobile);
         if(req.length) {
           newRequest = addRequestToContainer(request);
           req.replaceWith(newRequest);
@@ -204,19 +208,25 @@ function createRequestsGraph() {
       }
     });
     showRequestsChart(hours, data);
-    showCityWiseRequestsChart(count, totalCount);
-    // showCityWiseRequestsChart([20,30,40],90);
+    // showCityWiseRequestsChart(count, totalCount);
+    showCityWiseRequestsChart([20,30,40],90);
   });
 }
 
 function addCitiesToDropDown(cityNames) {
+  var temp = cityNames[0];
+  cityNames[0] = cityNames[1];
+  cityNames[1] = temp;
+
   cityNames.forEach(function(cityName) {
     $(".select2").append("<option value="+cityName+">"+cityName+"</option>");
   });
   $(".select2").select2();
   selectedCity = $(".select2").find(':selected').text();
+  console.log(selectedCity);
 
   $(".select2").on('change', function(){
+    db.ref('driver/'+selectedCity).off();
     selectedCity = this.value;
     loadData();
   });
