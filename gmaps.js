@@ -20,8 +20,8 @@ exports.getNearestDriver = function(db, userLat, userLon, mobile, callback) {
 				db.setDriverIdInRequest(requestID, nearestDriver.id);
 				db.getUserName(mobile, function(user) {
 					console.log("5");
-					// db.sendRequestToDriver(nearestDriver.phone, userLat, userLon, user, mobile, requestID);
-					// db.sendDriverLatLngToUser(mobile, minDur);
+					db.sendRequestToDriver(nearestDriver.phone, userLat, userLon, user, mobile, requestID);
+					db.sendDriverLatLngToUser(mobile, requestID);
 				});
 			});
 		});

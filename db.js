@@ -80,8 +80,8 @@ exports.sendRequestToDriver = function (driverMobile, lat, lng, user, userMobile
 	});
 };
 
-exports.sendDriverLatLngToUser = function (userMobile, duration) {
-	var msg = "Lateroxdriver "+duration;
+exports.sendDriverLatLngToUser = function (userMobile, requestId) {
+	var msg = "Lateroxdriver "+requestId;
 	sendSMS(userMobile, msg, function(chunk) {
 		console.log("user sms sent to: " + userMobile + " chunk: " + chunk);
 	});
